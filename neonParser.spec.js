@@ -1,5 +1,3 @@
-import { describe } from "riteway";
-
 const regex = {
   number: /^[.\d]+$/,
   string: /^\"/,
@@ -7,7 +5,6 @@ const regex = {
   object: /^\{/,
 }
 
-// const neon = JSON.parse;
 const neon = string => {
   if (regex.number.test(string)) {
     return +string
@@ -34,81 +31,32 @@ const neon = string => {
   }
 };
 
-describe("neon()", async assert => {
-  assert({
-    given: '"99"',
-    should: "return 99",
-    actual: neon("99"),
-    expected: 99
-  });
+describe('neon()', () => {
+  it('parses integers', () => {
+    const expected = 99;
+    const actual = neon('99');
 
-  assert({
-    given: '"1.44"',
-    should: "return 1.44",
-    actual: neon("1.44"),
-    expected: 1.44
-  });
+    expect(actual).toBe(expected)
+  })
 
-  assert({
-    given: '"sdf"',
-    should: 'return "sdf"',
-    actual: neon('"sdf"'),
-    expected: "sdf"
-  });
+  it('parses floats', () => {
+    const expected = 1.44;
+    const actual = neon('1.44');
 
-  assert({
-    given: "[1,2,3,4,5]",
-    should: "return [1, 2, 3, 4, 5]",
-    actual: neon("[1,2,3,4,5]"),
-    expected: [1, 2, 3, 4, 5]
-  });
+    expect(actual).toBe(expected)
+  })
 
-  // assert({
-  //   given: `[[1,2,3],"sdf",5]`,
-  //   should: "return `[[1,2,3],'sdf',5]`",
-  //   actual: neon(`[[1,2,3],"sdf",5]`),
-  //   expected: [[1, 2, 3], "sdf", 5]
-  // });
+  it('parses strings', () => {
+    const expected = 'sdf';
+    const actual = neon('"sdf"');
 
-  assert({
-    given: `{}`,
-    should: "return {}",
-    actual: neon(`{}`),
-    expected: {}
-  });
+    expect(actual).toBe(expected)
+  })
 
-  // assert({
-  //   given: `{"name": "JC"}`,
-  //   should: 'return `{"name": "JC"}`',
-  //   actual: neon(`{"name": "JC"}`),
-  //   expected: { name: "JC" }
-  // });
+  it('parses arrays with JSONs in it', () => {
+    const expected = [[1, 2, 3], "sdf", 5];
+    const actual = neon('[[1,2,3],"sdf",5]');
 
-  // const sampleJSON = {
-  //   name: "John Smith",
-  //   sku: "20223",
-  //   price: 23.95,
-  //   shipTo: {
-  //     name: "Jane Smith",
-  //     address: "123 Maple Street",
-  //     city: "Pretendville",
-  //     state: "NY",
-  //     zip: "12345"
-  //   },
-  //   billTo: {
-  //     name: "John Smith",
-  //     address: "123 Maple Street",
-  //     city: "Pretendville",
-  //     state: "NY",
-  //     zip: "12345"
-  //   },
-  //   items: [1, 2, 3, 4, 5]
-  // };
-
-  // assert({
-  //   given: "sampleJSON",
-  //   should: 'return parsed sampleJSON',
-  //   actual: neon(JSON.stringify(sampleJSON)),
-  //   expected: sampleJSON
-  // });
+    expect(actual).toEqual(expected)
+  })
 });
