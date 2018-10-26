@@ -1,62 +1,83 @@
 const regex = {
   number: /^[.\d]+$/,
   string: /^\"/,
-  array: /^\[/,
-  object: /^\{/,
-}
+  array: /^\[/
+};
 
 const neon = string => {
   if (regex.number.test(string)) {
-    return +string
+    return +string;
   }
 
   if (regex.string.test(string)) {
-    return string.replace(/\"/g, '')
+    return string.replace(/\"/g, "");
   }
 
   if (regex.array.test(string)) {
     return string
-      .replace(/^\[/, '')
-      .replace(/\]$/, '')
-      .split(',')
-      .map(neon)
-  }
-
-  if (regex.object.test(string)) {
-    return {}
-    // return string
-    //   .replace(/[\{\}]/g, '')
-      // .split(',')
-      // .map(neon)
+      .replace(/^\[/, "")
+      .replace(/\]$/, "")
+      .split(",")
+      .map(neon);
   }
 };
 
-describe('neon()', () => {
-  it('parses integers', () => {
+describe("neon()", () => {
+  it("parses integers", () => {
     const expected = 99;
-    const actual = neon('99');
+    const actual = neon("99");
 
-    expect(actual).toBe(expected)
-  })
+    expect(actual).toBe(expected);
+  });
 
-  it('parses floats', () => {
+  it("parses floats", () => {
     const expected = 1.44;
-    const actual = neon('1.44');
+    const actual = neon("1.44");
 
-    expect(actual).toBe(expected)
-  })
+    expect(actual).toBe(expected);
+  });
 
-  it('parses strings', () => {
-    const expected = 'sdf';
+  it("parses strings", () => {
+    const expected = "sdf";
     const actual = neon('"sdf"');
 
-    expect(actual).toBe(expected)
-  })
+    expect(actual).toBe(expected);
+  });
 
-  it('parses arrays with JSONs in it', () => {
-    const expected = [[1, 2, 3], "sdf", 5];
-    const actual = neon('[[1,2,3],"sdf",5]');
+  describe("arrays", () => {
+    it("parses []", () => {
+      const expected = [];
+      const actual = neon("[]");
 
-    expect(actual).toEqual(expected)
-  })
+      expect(actual).toEqual(expected);
+    });
+
+    it("parses [99]", () => {
+      const expected = [99];
+      const actual = neon("[99]");
+
+      expect(actual).toEqual(expected);
+    });
+
+    it("parses [[]]", () => {
+      const expected = [[]];
+      const actual = neon("[[]]");
+
+      expect(actual).toEqual(expected);
+    });
+
+    it("parses arrays", () => {
+      const expected = [1, 2, 3];
+      const actual = neon("[1,2,3]");
+
+      expect(actual).toEqual(expected);
+    });
+
+    it("parses arrays with JSONs in it", () => {
+      const expected = [[1, 2, 3], "sdf", 5];
+      const actual = neon('[[1,2,3],"sdf",5]');
+
+      expect(actual).toEqual(expected);
+    });
+  });
 });
