@@ -1,41 +1,27 @@
-const splitArrayString = string => {
-  const stringWithoutBrackets = string.replace(/^\[/, "").replace(/\]$/, "");
-
-  if (stringWithoutBrackets === "") return [];
-
-  const startsWithANumber = /^\d/.test(stringWithoutBrackets);
-
-  if (startsWithANumber) {
-    const indexOfComma = stringWithoutBrackets.indexOf(",");
-
-    if (indexOfComma === -1) return [stringWithoutBrackets];
-
-    return [
-      stringWithoutBrackets.substring(0, indexOfComma),
-      ...splitArrayString(stringWithoutBrackets.substring(indexOfComma + 1))
-    ];
-  }
-};
+const splitArrayString = require("./splitArrayString");
 
 describe("splitArrayString()", () => {
   it("splits []", () => {
-    const expected = [];
-    const actual = splitArrayString("[]");
+    expect(splitArrayString("[]")).toEqual([]);
+  });
 
-    expect(actual).toEqual(expected);
+  it("handles [[]]", () => {
+    expect(splitArrayString("[[]]")).toEqual(["[]"]);
   });
 
   it("splits [99]", () => {
-    const expected = ["99"];
-    const actual = splitArrayString("[99]");
-
-    expect(actual).toEqual(expected);
+    expect(splitArrayString("[99]")).toEqual(["99"]);
   });
 
   it("splits [99,99]", () => {
-    const expected = ["99", "99"];
-    const actual = splitArrayString("[99,99]");
+    expect(splitArrayString("[99,99]")).toEqual(["99", "99"]);
+  });
 
-    expect(actual).toEqual(expected);
+  it("handles [[1], 33]", () => {
+    expect(splitArrayString("[[1],33]")).toEqual(["[1]", "33"]);
+  });
+
+  it("splits [99,[99]]", () => {
+    expect(splitArrayString("[99,[99]]")).toEqual(["99", "[99]"]);
   });
 });

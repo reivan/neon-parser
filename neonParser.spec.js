@@ -1,3 +1,5 @@
+const splitArrayString = require("./splitArrayString");
+
 const regex = {
   number: /^[.\d]+$/,
   string: /^\"/,
@@ -14,11 +16,7 @@ const neon = string => {
   }
 
   if (regex.array.test(string)) {
-    return string
-      .replace(/^\[/, "")
-      .replace(/\]$/, "")
-      .split(",")
-      .map(neon);
+    return splitArrayString(string).map(neon);
   }
 };
 
@@ -73,11 +71,8 @@ describe("neon()", () => {
       expect(actual).toEqual(expected);
     });
 
-    it("parses arrays with JSONs in it", () => {
-      const expected = [[1, 2, 3], "sdf", 5];
-      const actual = neon('[[1,2,3],"sdf",5]');
-
-      expect(actual).toEqual(expected);
+    it(`parses [[1,2,3],"sdf",5]`, () => {
+      expect(neon('[[1,2,3],"sdf",5]')).toEqual([[1, 2, 3], "sdf", 5]);
     });
   });
 });
