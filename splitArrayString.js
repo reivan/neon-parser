@@ -8,8 +8,9 @@ const splitArrayString = string => {
   if (stringWithoutBrackets === "") return [];
 
   const startsWithANumber = /^\d/.test(stringWithoutBrackets);
+  const startsWithASring = stringWithoutBrackets[0] === `"`;
 
-  if (startsWithANumber) {
+  if (startsWithANumber || startsWithASring) {
     const indexOfComma = stringWithoutBrackets.indexOf(",");
 
     if (indexOfComma === -1) return [stringWithoutBrackets];

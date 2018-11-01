@@ -17,6 +17,10 @@ describe("splitArrayString()", () => {
     expect(splitArrayString("[99,99]")).toEqual(["99", "99"]);
   });
 
+  it(`splits [99,"sdf"]`, () => {
+    expect(splitArrayString(`[99,"sdf"]`)).toEqual(["99", `"sdf"`]);
+  });
+
   it("handles [[1], 33]", () => {
     expect(splitArrayString("[[1],33]")).toEqual(["[1]", "33"]);
   });
