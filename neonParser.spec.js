@@ -22,53 +22,32 @@ const neon = string => {
 
 describe("neon()", () => {
   it("parses integers", () => {
-    const expected = 99;
-    const actual = neon("99");
-
-    expect(actual).toBe(expected);
+    expect(neon("99")).toBe(99);
   });
 
   it("parses floats", () => {
-    const expected = 1.44;
-    const actual = neon("1.44");
-
-    expect(actual).toBe(expected);
+    expect(neon("1.44")).toBe(1.44);
   });
 
   it("parses strings", () => {
-    const expected = "sdf";
-    const actual = neon('"sdf"');
-
-    expect(actual).toBe(expected);
+    expect(neon('"sdf"')).toBe("sdf");
   });
 
   describe("arrays", () => {
     it("parses []", () => {
-      const expected = [];
-      const actual = neon("[]");
-
-      expect(actual).toEqual(expected);
+      expect(neon("[]")).toEqual([]);
     });
 
     it("parses [99]", () => {
-      const expected = [99];
-      const actual = neon("[99]");
-
-      expect(actual).toEqual(expected);
+      expect(neon("[99]")).toEqual([99]);
     });
 
     it("parses [[]]", () => {
-      const expected = [[]];
-      const actual = neon("[[]]");
-
-      expect(actual).toEqual(expected);
+      expect(neon("[[]]")).toEqual([[]]);
     });
 
     it("parses arrays", () => {
-      const expected = [1, 2, 3];
-      const actual = neon("[1,2,3]");
-
-      expect(actual).toEqual(expected);
+      expect(neon("[1,2,3]")).toEqual([1, 2, 3]);
     });
 
     it(`parses [[1,2,3],"sdf",5]`, () => {
