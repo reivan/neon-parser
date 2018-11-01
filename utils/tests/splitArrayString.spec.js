@@ -1,4 +1,4 @@
-const splitArrayString = require("./splitArrayString");
+const splitArrayString = require("../splitArrayString");
 
 describe("splitArrayString()", () => {
   it("splits []", () => {

@@ -1,26 +1,6 @@
-const splitArrayString = require("./splitArrayString");
+const neon = require("../neonParser");
 
-const regex = {
-  number: /^[.\d]+$/,
-  string: /^\"/,
-  array: /^\[/
-};
-
-const neon = string => {
-  if (regex.number.test(string)) {
-    return +string;
-  }
-
-  if (regex.string.test(string)) {
-    return string.replace(/\"/g, "");
-  }
-
-  if (regex.array.test(string)) {
-    return splitArrayString(string).map(neon);
-  }
-};
-
-describe("neon()", () => {
+describe("neonParser()", () => {
   it("parses integers", () => {
     expect(neon("99")).toBe(99);
   });

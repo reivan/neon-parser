@@ -1,4 +1,4 @@
-const indexOfMatchingBracket = require("./indexOfMatchingBracket");
+const indexOfMatchingBracket = require("../indexOfMatchingBracket");
 
 const iomb = indexOfMatchingBracket;
 
