@@ -34,4 +34,14 @@ describe("neonParser()", () => {
       expect(neon('[[1,2,3],"sdf",5]')).toEqual([[1, 2, 3], "sdf", 5]);
     });
   });
+
+  describe("objects", () => {
+    it("parses {}", () => {
+      expect(neon("{}")).toEqual({});
+    });
+
+    it('parses {"protonMass": "1.67e-27"}', () => {
+      expect(neon('{"protonMass": "1.67e-27"}')).toEqual({ protonMass: "1.67e-27" });
+    });
+  });
 });

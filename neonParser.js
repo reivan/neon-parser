@@ -1,4 +1,5 @@
 const splitArrayString = require("./utils/splitArrayString");
+const parseSingleKeyObject = require("./utils/parseSingleKeyObject");
 
 const regex = {
   number: /^[.\d]+$/,
@@ -17,6 +18,14 @@ const neonParser = string => {
 
   if (regex.array.test(string)) {
     return splitArrayString(string).map(neonParser);
+  }
+
+  const startsWithCurly = string[0] === "{";
+  if (startsWithCurly) {
+    if (string === "{}") return {};
+
+    const [key, valueString] = parseSingleKeyObject(string);
+    return { [key]: neonParser(valueString) };
   }
 };
 
