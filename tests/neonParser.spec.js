@@ -40,8 +40,17 @@ describe("neonParser()", () => {
       expect(neon("{}")).toEqual({});
     });
 
-    it('parses {"protonMass": "1.67e-27"}', () => {
-      expect(neon('{"protonMass": "1.67e-27"}')).toEqual({ protonMass: "1.67e-27" });
+    it('parses {"protonMass":"1.67e-27"}', () => {
+      expect(neon('{"protonMass":"1.67e-27"}')).toEqual({ protonMass: "1.67e-27" });
+    });
+
+    it('parses {"protonMass":"1.67e-27","count":1,"step":3}', () => {
+      const expected = {
+        protonMass: "1.67e-27",
+        count: 1,
+        step: 3
+      };
+      expect(neon('{"protonMass":"1.67e-27","count":1,"step":3}')).toEqual(expected);
     });
   });
 });
