@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>imperative neon-parser</title>
+  </head>
+  <body>
+    <script>
+      console.log(parse("1"));
+      console.log(parse("123"));
+      console.log(parse(`"sdf"`));
+      console.log(parse("[]"));
+      console.log(parse("[1,2,3]"));
+      console.log(parse("[1,[2,3]]"));
+      console.log(parse("{}"));
+      console.log(parse(`{"sdf":123}`));
+      console.log(parse(`{"sdf":123,"fds":"123"}`));
+      console.log(parse(`{"wfe":[]}`));
+      console.log(parse(`{"sdf":123,"fds":"123","wfe":[]}`));
+      console.log(parse(`{"sdf":123,"fds":"123","wfe":["123",321,{"a":"b"}]}`));
+
+      function parse(string) {
+        const [result] = parseJSON(string, 0);
+        return result;
+      }
+
+      function parseJSON(string, index) {
+        if (isDigit(string[index])) {
+          return parseNumber(string, index);
+        }
+
+        if (string[index] === "[") {
+          return parseArray(string, index);
+        }
+
+        if (string[index] === "{") {
+          return parseObject(string, index);
+        }
+
+        if (string[index] === '"') {
+          return parseString(string, index);
+        }
+      }
+
+      function parseNumber(string, index) {
+        let localIndex = index;
+
+        while (isDigit(string[localIndex])) {
+          localIndex += 1;
+        }
+
+        const result = Number(string.slice(index, localIndex));
+
+        return [result, localIndex];
+      }
+
+      function parseString(string, index) {
+        let localIndex = index + 1;
+
+        while (string[localIndex] !== '"') {
+          localIndex += 1;
+        }
+
+        const result = string.slice(index + 1, localIndex);
+
+        return [result, localIndex + 1];
+      }
+
+      function parseArray(string, index) {
+        let localIndex = index + 1;
+        const result = [];
+
+        while (string[localIndex]) {
+          if (string[localIndex] === "]") {
+            localIndex += 1;
+            break;
+          }
+
+          if (string[localIndex] === ",") {
+            localIndex += 1;
+            continue;
+          }
+
+          const [someJSON, newIndex] = parseJSON(string, localIndex);
+          result.push(someJSON);
+          localIndex = newIndex;
+        }
+
+        return [result, localIndex];
+      }
+
+      function parseObject(string, index) {
+        let localIndex = index + 1;
+        const result = {};
+
+        while (string[localIndex]) {
+          if (string[localIndex] === "}") {
+            localIndex += 1;
+            break;
+          }
+
+          if (string[localIndex] === ",") {
+            localIndex += 1;
+            continue;
+          }
+
+          const [key, newIndex] = parseString(string, localIndex);
+          const [someJSON, newerIndex] = parseJSON(string, newIndex + 1); // + 1 is a step over colon ":"
+          localIndex = newerIndex;
+          result[key] = someJSON;
+        }
+
+        return [result, localIndex];
+      }
+
+      function isDigit(char) {
+        return /[0-9]/.test(char);
+      }
+    </script>
+  </body>
+</html>
